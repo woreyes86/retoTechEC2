@@ -1,38 +1,21 @@
-env.PATH_PROJECT='back/'
+
 node('slave' ) { 
         
-        stage('Descargar Fuentes') {  
-                checkout scm 
-        }
-        stage('Tests') {
+        
+        stage('Creacion de Instancia EC2') {
             script { 
-             /*  dir("back") {  */
+            
                     echo 'Building..' 
-                    sh ' ls' 
-                    sh ' cd ${PATH_PROJECT} && ./mvnw clean test' 
-              /*   }      */         
+                    sh ' docker run \
+ --env AWS_ACCESS_KEY_ID=AKIAURM4Z6Q3CNCME2XR \
+ --env AWS_SECRET_ACCESS_KEY=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 \
+ garland/aws-cli-docker \
+ aws ec2 run-instances --image-id ami-173d747e --count 1 --instance-type t1.micro --key-name worp --security-groups RetoTech_SG' 
+                 
+            
             }
         } 
-         stage('Analisis de codigo') { 
-            withSonarQubeEnv('SonarQubeServer') {
-                 script {   
-                        echo 'Sonar Qube.. ' 
-                        sh ' cd ${PATH_PROJECT} && mvn sonar:sonar'       
-                                
-                }
-            }
-         }
-
-         stage('Verificar calidad técnica') { 
-                script{					
-                    timeout(time: 1, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                        def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                        if (qg.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        }
-                    }
-                }
-        }
+        
       
          
     } 
