@@ -1,5 +1,6 @@
 
-node('slave' ) { 
+
+{ 
         
         
         stage('Creacion de Instancia EC2') {
