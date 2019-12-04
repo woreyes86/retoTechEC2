@@ -1,0 +1,29 @@
+server:
+  port: 8084
+spring:
+  
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      use_sql_comments: true
+      generate_statistics: true
+      connection:
+        CharSet: utf8
+        useUnicode: false
+        characterEncoding: utf8
+      hibernate:
+        format_sql: true
+        default_schema: null
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        ddl-auto: none
+  datasource: 
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysqlserver:3306/eshupingahua
+    username: eshupingahua
+    password: eshupingahua        
+#        enable_lazy_load_no_trans: true
+

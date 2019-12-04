@@ -1,0 +1,32 @@
+version: '3' 
+services:
+    reverseproxy:
+        image: reverseproxy
+        container_name: reverseproxy
+        build:
+            context: $PWD/nginx
+        ports:
+            - 8080:8080
+            - 8081:8081
+        restart: always 
+    mysqlserver:
+        image: mysql-server
+        container_name: mysql-server
+        environment: 
+            MYSQL_DATABASE: eshupingahua
+            MYSQL_USER: eshupingahua
+            MYSQL_PASSWORD: eshupingahua
+        ports:
+            - 3306:3306
+        build:
+            context: $PWD/mysql
+        restart: always
+    apiweb:
+        image: api-web
+        container_name: api-web
+        depends_on:
+            - reverseproxy
+            - mysqlserver
+        build:
+            context: $PWD/back
+        restart: always
